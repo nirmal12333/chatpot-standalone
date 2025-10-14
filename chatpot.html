@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Research Chatbot - Indian Law Assistant</title>
+    <link rel="stylesheet" href="chat.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="header">
+        <h1 class="animated-title">Legal Research Assistant</h1>
+        <div class="subtitle">Comprehensive Indian Law Knowledge Base</div>
+        <div class="header-links">
+            <a href="standalone_legal_chatbot.html" target="_blank" class="standalone-link">
+                <i class="fas fa-robot"></i> Offline Chatbot Version
+            </a>
+        </div>
+    </div>
+
+    <div class="main animated-container">
+        <div class="language-selector">
+            <label for="language"><i class="fas fa-language"></i> Select Jurisdiction:</label>
+            <select id="language" name="language" class="animated-select">
+                <option value="en">India - All States</option>
+                <option value="central">Central Laws Only</option>
+                <option value="maharashtra">Maharashtra</option>
+                <option value="delhi">Delhi</option>
+                <option value="karnataka">Karnataka</option>
+                <option value="tamilnadu">Tamil Nadu</option>
+                <option value="Nepal">Nepal</option>
+            </select>
+        </div>
+        
+        <div class="input-section">
+            <label for="username"><i class="fas fa-search"></i> Legal Query:</label>
+            <div class="input-wrapper">
+                <input type="text" id="username" name="username" placeholder="Ask about any Indian law, case, or legal procedure..." class="animated-input">
+                <button class="submit-btn animated-btn" onclick="sendQuery()">
+                    <i class="fas fa-paper-plane"></i> Submit
+                </button>
+            </div>
+        </div>
+        
+        <div class="quick-links">
+            <h3><i class="fas fa-bolt"></i> Common Legal Queries:</h3>
+            <div class="quick-questions">
+                <button class="quick-btn" onclick="setQuestion('What are my rights as a consumer in India?')">Consumer Rights</button>
+                <button class="quick-btn" onclick="setQuestion('How to file a complaint under Consumer Protection Act?')">Consumer Complaint</button>
+                <button class="quick-btn" onclick="setQuestion('What is the procedure for company registration in India?')">Company Registration</button>
+                <button class="quick-btn" onclick="setQuestion('Explain the key provisions of IPC Section 420')">IPC Section 420</button>
+                <button class="quick-btn" onclick="setQuestion('What are the grounds for divorce in India?')">Divorce Law</button>
+                <button class="quick-btn" onclick="setQuestion('How to file a RTI application?')">RTI Application</button>
+            </div>
+        </div>
+        
+        <div class="ai-world-section">
+            <h3><i class="fas fa-globe-asia"></i> Global Legal Information:</h3>
+            <div class="ai-types-buttons">
+                <button class="quick-btn ai-world-btn" onclick="showWorldInfo('overview')">
+                    <i class="fas fa-globe-americas"></i> Legal Systems Overview
+                </button>
+                <button class="quick-btn ai-world-btn" onclick="showWorldInfo('statistics')">
+                    <i class="fas fa-chart-bar"></i> Global Legal Statistics
+                </button>
+                <button class="quick-btn ai-world-btn" onclick="showWorldInfo('comparison')">
+                    <i class="fas fa-balance-scale"></i> System Comparison
+                </button>
+            </div>
+            <div id="world-info-container" class="world-info-container"></div>
+        </div>
+        
+        <div class="instructions-section">
+            <h3><i class="fas fa-info-circle"></i> How to Use This Assistant:</h3>
+            <ul>
+                <li>Ask specific questions about Indian laws, legal procedures, or court cases</li>
+                <li>Try questions like "What are the penalties for drunk driving in India?"</li>
+                <li>Use the quick links above for common legal queries</li>
+                <li>Explore global legal systems using the buttons in the Global Legal Information section</li>
+                <li>For best results, be as specific as possible in your queries</li>
+            </ul>
+        </div>
+        
+        <div class="standalone-section">
+            <h3><i class="fas fa-robot"></i> Alternative Chatbot (No Internet Required):</h3>
+            <p>If you're experiencing connection issues or want to use the chatbot offline, you can use our standalone version:</p>
+            <button class="quick-btn" onclick="openStandaloneChatbot()">
+                <i class="fas fa-external-link-alt"></i> Open Standalone Chatbot
+            </button>
+            <p class="note">This version works completely offline and doesn't require any API connections.</p>
+        </div>
+    </div>
+
+    <div class="chat-container animated-container">
+        <div class="chat-header">
+            <h2><i class="fas fa-comments"></i> Legal Consultation</h2>
+        </div>
+        <div id="chat-history" class="chat-history">
+            <div class="message bot-message">
+                <strong>Legal Assistant:</strong> 
+                <p>Welcome to the Legal Research Assistant! I can help you with comprehensive information on Indian laws, legal procedures, and case precedents.</p>
+                <p><strong>How to get started:</strong></p>
+                <ul>
+                    <li>Ask me about any Indian law (e.g., "What is IPC Section 302?")</li>
+                    <li>Inquire about legal procedures (e.g., "How to file a consumer complaint?")</li>
+                    <li>Get information about your rights (e.g., "What are my rights as a tenant?")</li>
+                </ul>
+                <p>Please note: I provide legal information, not legal advice. For specific legal situations, please consult with a qualified attorney.</p>
+            </div>
+        </div>
+        <div class="typing-indicator" id="typingIndicator">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
+    <footer class="foot animated-footer">
+        <div class="footer-content">
+            <p><i class="fas fa-gavel"></i> Legal Research Assistant | &copy; 2025 Indian Law Database</p>
+            <p>Developed by Nirmal Subedi</p>
+            <p>BCA Data Science, SRM IST Trichy</p>
+            <p>From Nepal, Studying in India</p>
+            <p>Bringing cross-cultural perspectives to legal technology innovation</p>
+            <div class="social-icons">
+                <i class="fab fa-twitter"></i>
+                <i class="fab fa-linkedin"></i>
+                <i class="fab fa-github"></i>
+                <i class="fas fa-book"></i>
+            </div>
+        </div>
+    </footer>
+
+    <script src="chat.js"></script>
+    
+    <script>
+        function setQuestion(question) {
+            document.getElementById("username").value = question;
+            sendQuery();
+        }
+        
+        function openStandaloneChatbot() {
+            window.open('standalone_legal_chatbot.html', '_blank');
+        }
+        
+        function showWorldInfo(infoType) {
+            const container = document.getElementById("world-info-container");
+            
+            container.innerHTML = "";
+            
+            container.innerHTML = '<div class="loading">Loading information...</div>';
+            
+            setTimeout(() => {
+                container.innerHTML = "";
+                
+                const worldInfoContent = document.createElement("div");
+                worldInfoContent.className = "world-info-content";
+                
+                switch(infoType) {
+                    case 'overview':
+                        worldInfoContent.innerHTML = `
+                            <div class="world-info-card">
+                                <h2><i class="fas fa-globe-americas"></i> Global Legal Systems Overview</h2>
+                                <div class="world-info-grid">
+                                    <div class="info-item">
+                                        <h3><i class="fas fa-balance-scale"></i> Common Law</h3>
+                                        <p>Used in UK, USA, Canada, Australia, India. Based on precedent and judicial decisions.</p>
+                                        <div class="ai-insight">
+                                            <strong>AI Insight:</strong> Common law systems are characterized by case law and judicial precedents. Judges play a significant role in shaping the law through their interpretations.
+                                        </div>
+                                    </div>
+                                    <div class="info-item">
+                                        <h3><i class="fas fa-landmark"></i> Civil Law</h3>
+                                        <p>Used in most of Europe, Latin America. Based on comprehensive legal codes.</p>
+                                        <div class="ai-insight">
+                                            <strong>AI Insight:</strong> Civil law systems rely on written statutes and codes. Judges primarily apply the law rather than create it through precedent.
+                                        </div>
+                                    </div>
+                                    <div class="info-item">
+                                        <h3><i class="fas fa-umbrella-beach"></i> Religious Law</h3>
+                                        <p>Based on religious texts. Examples: Sharia law, Halakha, Canon law.</p>
+                                        <div class="ai-insight">
+                                            <strong>AI Insight:</strong> Religious legal systems derive their authority from divine sources. They often govern both personal and public conduct.
+                                        </div>
+                                    </div>
+                                    <div class="info-item">
+                                        <h3><i class="fas fa-chess-board"></i> Customary Law</h3>
+                                        <p>Based on customs and traditions. Often found in indigenous communities.</p>
+                                        <div class="ai-insight">
+                                            <strong>AI Insight:</strong> Customary law systems are rooted in the traditions and practices of specific communities. They often coexist with formal legal systems.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        break;
+                        
+                    case 'statistics':
+                        worldInfoContent.innerHTML = `
+                            <div class="world-info-card">
+                                <h2><i class="fas fa-chart-bar"></i> Global Legal Statistics</h2>
+                                <div class="world-legal-stats">
+                                    <div class="stat-item">
+                                        <h3><i class="fas fa-flag"></i> Countries with Legal Systems</h3>
+                                        <p class="stat-number">200+</p>
+                                        <p>Distinct legal systems across sovereign nations</p>
+                                    </div>
+                                    <div class="stat-item">
+                                        <h3><i class="fas fa-balance-scale"></i> Common Law Systems</h3>
+                                        <p class="stat-number">~30%</p>
+                                        <p>Used in approximately 60 countries worldwide</p>
+                                    </div>
+                                    <div class="stat-item">
+                                        <h3><i class="fas fa-gavel"></i> Civil Law Systems</h3>
+                                        <p class="stat-number">~70%</p>
+                                        <p>Used in approximately 140 countries worldwide</p>
+                                    </div>
+                                    <div class="stat-item">
+                                        <h3><i class="fas fa-file-contract"></i> International Treaties</h3>
+                                        <p class="stat-number">100+</p>
+                                        <p>New international law treaties signed annually</p>
+                                    </div>
+                                    <div class="stat-item">
+                                        <h3><i class="fas fa-users"></i> Legal Professionals</h3>
+                                        <p class="stat-number">10M+</p>
+                                        <p>Lawyers, judges, and legal professionals globally</p>
+                                    </div>
+                                </div>
+                                <div class="ai-analysis">
+                                    <h3><i class="fas fa-robot"></i> AI Legal Analysis</h3>
+                                    <p>The majority of countries use civil law systems, which are based on comprehensive legal codes rather than judicial precedent. Common law systems, while fewer in number, include some of the world's largest economies like the USA, UK, and India.</p>
+                                </div>
+                            </div>
+                        `;
+                        break;
+                        
+                    case 'comparison':
+                        worldInfoContent.innerHTML = `
+                            <div class="world-info-card">
+                                <h2><i class="fas fa-balance-scale"></i> Legal System Comparison</h2>
+                                <div class="comparison-table">
+                                    <div class="table-header">
+                                        <div>Feature</div>
+                                        <div>Common Law</div>
+                                        <div>Civil Law</div>
+                                        <div>Religious Law</div>
+                                    </div>
+                                    <div class="table-row">
+                                        <div>Primary Source</div>
+                                        <div>Judicial Precedent</div>
+                                        <div>Statutory Codes</div>
+                                        <div>Religious Texts</div>
+                                    </div>
+                                    <div class="table-row">
+                                        <div>Role of Judges</div>
+                                        <div>Law Creators</div>
+                                        <div>Law Appliers</div>
+                                        <div>Interpreters</div>
+                                    </div>
+                                    <div class="table-row">
+                                        <div>Flexibility</div>
+                                        <div>High</div>
+                                        <div>Moderate</div>
+                                        <div>Low</div>
+                                    </div>
+                                    <div class="table-row">
+                                        <div>Examples</div>
+                                        <div>USA, UK, India</div>
+                                        <div>France, Germany, Japan</div>
+                                        <div>Saudi Arabia, Iran, Vatican</div>
+                                    </div>
+                                </div>
+                                <div class="ai-recommendation">
+                                    <h3><i class="fas fa-lightbulb"></i> AI Recommendation</h3>
+                                    <p>For international legal research, understanding the fundamental differences between legal systems is crucial. Common law systems offer more flexibility through judicial interpretation, while civil law systems provide more predictability through codified statutes.</p>
+                                </div>
+                            </div>
+                        `;
+                        break;
+                        
+                    default:
+                        worldInfoContent.innerHTML = `
+                            <div class="world-info-card">
+                                <h2><i class="fas fa-exclamation-triangle"></i> Information Not Available</h2>
+                                <p>Please select a valid information type to display.</p>
+                            </div>
+                        `;
+                }
+                
+                container.appendChild(worldInfoContent);
+            }, 800);
+        }
+    </script>
+</body>
+</html>

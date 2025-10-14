@@ -1,0 +1,102 @@
+[
+  {
+    "question": "What is the Commercial Courts Act?",
+    "answer": "The Commercial Courts Act, 2015 provides for the constitution of commercial courts, commercial divisions and commercial appellate divisions in the high courts for adjudicating commercial disputes of specified value.",
+    "category": "commercial_law"
+  },
+  {
+    "question": "What does the Arbitration Act cover?",
+    "answer": "The Arbitration and Conciliation Act, 1996 consolidates and amends the law relating to domestic and international arbitration and enforcement of foreign arbitral awards.",
+    "category": "arbitration_law"
+  },
+  {
+    "question": "What are the essential elements of a contract?",
+    "answer": "Under the Indian Contract Act, 1872, the essential elements of a contract include offer and acceptance, intention to create legal relations, lawful consideration, capacity of parties, free consent, lawful object, and certainty of terms.",
+    "category": "contract_law"
+  },
+  {
+    "question": "What is specific relief?",
+    "answer": "The Specific Relief Act, 1963 provides remedies to enforce civil rights when a person's rights have been violated. It includes recovery of possession of property, specific performance of contracts, rectification of instruments, rescission of contracts, and injunctions.",
+    "category": "civil_law"
+  },
+  {
+    "question": "What are the rights of buyers under the Sale of Goods Act?",
+    "answer": "The Sale of Goods Act, 1930 protects buyers by ensuring they receive goods that match the description, are of satisfactory quality, and are fit for purpose. Buyers have rights to reject non-conforming goods and claim damages.",
+    "category": "commercial_law"
+  },
+  {
+    "question": "How are commercial disputes resolved in India?",
+    "answer": "Commercial disputes in India are resolved through commercial courts established under the Commercial Courts Act, 2015. These specialized courts handle commercial disputes of specified monetary value with the aim of speedy resolution.",
+    "category": "commercial_law"
+  },
+  {
+    "question": "What is arbitration?",
+    "answer": "Arbitration is an alternative dispute resolution mechanism where parties agree to submit their disputes to an impartial arbitrator whose decision is binding. It is governed by the Arbitration and Conciliation Act, 1996 in India.",
+    "category": "arbitration_law"
+  },
+  {
+    "question": "What makes a contract valid?",
+    "answer": "A valid contract under the Indian Contract Act requires: (1) offer and acceptance, (2) lawful consideration, (3) capacity of parties, (4) free consent, (5) lawful object, and (6) agreement not expressly declared void.",
+    "category": "contract_law"
+  },
+  {
+    "question": "What are the key provisions of the Companies Act 2013?",
+    "answer": "The Companies Act 2013 regulates company incorporation, governance, and winding up. Key provisions include corporate social responsibility requirements, one-person company concept, class action suits, and enhanced penalties for fraud.",
+    "category": "corporate_law"
+  },
+  {
+    "question": "What is the difference between civil and criminal law?",
+    "answer": "Civil law deals with disputes between individuals or organizations, typically involving compensation or specific performance. Criminal law deals with offenses against the state, with punishments like imprisonment or fines.",
+    "category": "general_law"
+  },
+  {
+    "question": "What are fundamental rights in the Indian Constitution?",
+    "answer": "The Indian Constitution guarantees six fundamental rights: (1) Right to Equality, (2) Right to Freedom, (3) Right against Exploitation, (4) Right to Freedom of Religion, (5) Cultural and Educational Rights, and (6) Right to Constitutional Remedies.",
+    "category": "constitutional_law"
+  },
+  {
+    "question": "What is intellectual property law?",
+    "answer": "Intellectual property law protects creations of the mind, such as inventions, literary works, designs, and symbols. In India, it includes patents, trademarks, copyrights, and designs protection under respective acts.",
+    "category": "ip_law"
+  },
+  {
+    "question": "What are consumer rights in India?",
+    "answer": "Under the Consumer Protection Act 2019, consumers have six rights: (1) Right to Safety, (2) Right to Information, (3) Right to Choice, (4) Right to be Heard, (5) Right to Seek Redressal, and (6) Right to Consumer Education.",
+    "category": "consumer_law"
+  },
+  {
+    "question": "What is the procedure for filing a civil suit?",
+    "answer": "To file a civil suit: (1) Draft a plaint with cause of action and relief sought, (2) Pay required court fees, (3) Submit to appropriate civil court, (4) Serve notice to defendant, (5) Attend hearings, and (6) Obtain decree and execution.",
+    "category": "civil_procedure"
+  },
+  {
+    "question": "What are the types of contracts under Indian Contract Act?",
+    "answer": "Types of contracts include: (1) Valid contracts, (2) Void contracts, (3) Voidable contracts, (4) Illegal contracts, (5) Express contracts, (6) Implied contracts, (7) Executed contracts, and (8) Executory contracts.",
+    "category": "contract_law"
+  },
+  {
+    "question": "What is cybercrime and how is it regulated in India?",
+    "answer": "Cybercrime involves illegal activities conducted through digital means. In India, it is regulated by the Information Technology Act 2000, which covers hacking, identity theft, cyberstalking, and online fraud with penalties including imprisonment.",
+    "category": "cyber_law"
+  },
+  {
+    "question": "What are the different types of legal systems in the world?",
+    "answer": "The world's legal systems can be broadly categorized into four types: (1) Common Law - based on judicial precedent and case law, (2) Civil Law - based on comprehensive legal codes, (3) Religious Law - based on religious texts and doctrines, and (4) Customary Law - based on customs and traditions of specific communities.",
+    "category": "global_legal_systems"
+  },
+  {
+    "question": "Which countries use common law systems?",
+    "answer": "Common law systems are used in the United Kingdom, United States, Canada, Australia, India, Pakistan, Malaysia, and several other countries. These systems are characterized by judicial precedent and case law as primary sources of law.",
+    "category": "global_legal_systems"
+  },
+  {
+    "question": "What distinguishes civil law from common law systems?",
+    "answer": "Civil law systems are based on comprehensive legal codes and statutes, with judges primarily applying the law rather than creating it through precedent. Common law systems rely on judicial precedent and case law, with judges playing a more active role in shaping the law.",
+    "category": "global_legal_systems"
+  },
+  {
+    "question": "How many countries have legal systems worldwide?",
+    "answer": "There are approximately 195 countries with distinct legal systems worldwide. Of these, about 135 use civil law systems, 60 use common law systems, 25 use religious law systems, and 40 have mixed legal systems that combine elements of different legal traditions.",
+    "category": "global_legal_statistics"
+  }
+]

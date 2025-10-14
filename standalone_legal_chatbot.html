@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Standalone Legal Research Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --legal-dark-blue: #1a3a6c;
+            --legal-medium-blue: #2c5282;
+            --legal-light-blue: #4299e1;
+            --legal-accent-gold: #d69e2e;
+            --legal-neutral-gray: #e2e8f0;
+            --legal-dark-gray: #4a5568;
+            --legal-white: #ffffff;
+            --legal-black: #2d3748;
+        }
+
+        body {
+            background: linear-gradient(-45deg, var(--legal-dark-blue), #0f1c33, var(--legal-medium-blue), var(--legal-dark-blue));
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--legal-black);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            padding: 30px 0 20px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .animated-title {
+            color: var(--legal-white);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            position: relative;
+            display: inline-block;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            color: var(--legal-neutral-gray);
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-top: 15px;
+        }
+
+        .main-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+        }
+
+        .input-section {
+            margin-bottom: 30px;
+        }
+
+        .input-section label {
+            display: block;
+            color: var(--legal-dark-blue);
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 10px;
+        }
+
+        .query-input {
+            flex: 1;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border: 2px solid var(--legal-light-blue);
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .query-input:focus {
+            outline: none;
+            border-color: var(--legal-accent-gold);
+            box-shadow: 0 0 0 3px rgba(214, 158, 46, 0.3);
+        }
+
+        .submit-btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(45deg, var(--legal-dark-blue), var(--legal-medium-blue));
+            color: var(--legal-white);
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(26, 58, 108, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(26, 58, 108, 0.6);
+        }
+
+        .quick-links {
+            margin-top: 20px;
+        }
+
+        .quick-links h3 {
+            color: var(--legal-dark-blue);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quick-questions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .quick-btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 20px;
+            background: rgba(66, 153, 225, 0.1);
+            color: var(--legal-dark-blue);
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(66, 153, 225, 0.3);
+        }
+
+        .quick-btn:hover {
+            background: rgba(66, 153, 225, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .chat-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            min-height: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .chat-header {
+            border-bottom: 2px solid var(--legal-light-blue);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .chat-header h2 {
+            color: var(--legal-dark-blue);
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        .chat-history {
+            height: 400px;
+            overflow-y: auto;
+            padding: 15px;
+            background-color: rgba(247, 250, 252, 0.8);
+            border-radius: 10px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            scroll-behavior: smooth;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            border-left: 4px solid transparent;
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, #f0f4f8, #e2e8f0);
+            text-align: right;
+            border-left-color: var(--legal-light-blue);
+        }
+
+        .bot-message {
+            background: linear-gradient(135deg, #f8fafc, #edf2f7);
+            text-align: left;
+            border-left-color: var(--legal-accent-gold);
+        }
+
+        .typing-indicator {
+            display: none;
+            padding: 10px;
+            text-align: center;
+            color: var(--legal-dark-blue);
+        }
+
+        .typing-indicator span {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--legal-light-blue);
+            margin: 0 3px;
+            animation: bounce 1.5s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .footer {
+            text-align: center;
+            background: rgba(26, 58, 108, 0.95);
+            color: var(--legal-neutral-gray);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .input-wrapper {
+                flex-direction: column;
+            }
+            
+            .chat-history {
+                height: 300px;
+            }
+            
+            .animated-title {
+                font-size: 2rem;
+            }
+        }
+
+        .source-info {
+            font-size: 0.9rem;
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.7);
+            border-left: 3px solid var(--legal-light-blue);
+            border-radius: 0 5px 5px 0;
+        }
+
+        .disclaimer {
+            background: rgba(214, 158, 46, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            border: 1px solid rgba(214, 158, 46, 0.3);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="animated-title">Standalone Legal Research Assistant</h1>
+            <div class="subtitle">Self-contained AI Legal Assistant - No External Dependencies</div>
+        </div>
+
+        <div class="main-card">
+            <div class="input-section">
+                <label for="queryInput"><i class="fas fa-search"></i> Legal Query:</label>
+                <div class="input-wrapper">
+                    <input type="text" id="queryInput" class="query-input" placeholder="Ask about any Indian law, case, or legal procedure...">
+                    <button class="submit-btn" onclick="processQuery()">
+                        <i class="fas fa-paper-plane"></i> Submit
+                    </button>
+                </div>
+            </div>
+            
+            <div class="quick-links">
+                <h3><i class="fas fa-bolt"></i> Common Legal Queries:</h3>
+                <div class="quick-questions">
+                    <button class="quick-btn" onclick="setQuestion('What are my rights as a consumer in India?')">Consumer Rights</button>
+                    <button class="quick-btn" onclick="setQuestion('How to file a complaint under Consumer Protection Act?')">Consumer Complaint</button>
+                    <button class="quick-btn" onclick="setQuestion('What is the procedure for company registration in India?')">Company Registration</button>
+                    <button class="quick-btn" onclick="setQuestion('Explain the key provisions of IPC Section 420')">IPC Section 420</button>
+                    <button class="quick-btn" onclick="setQuestion('What are the grounds for divorce in India?')">Divorce Law</button>
+                    <button class="quick-btn" onclick="setQuestion('How to file a RTI application?')">RTI Application</button>
+                </div>
+            </div>
+            
+            <div class="disclaimer">
+                <p><strong>Legal Disclaimer:</strong> This assistant provides legal information, not legal advice. For specific legal situations, please consult with a qualified attorney.</p>
+            </div>
+        </div>
+
+        <div class="chat-container">
+            <div class="chat-header">
+                <h2><i class="fas fa-comments"></i> Legal Consultation</h2>
+            </div>
+            <div id="chatHistory" class="chat-history">
+                <div class="message bot-message">
+                    <strong>Legal Assistant:</strong>
+                    <p>Welcome to the Standalone Legal Research Assistant! I can help you with comprehensive information on Indian laws, legal procedures, and case precedents.</p>
+                    <p><strong>How to get started:</strong></p>
+                    <ul>
+                        <li>Ask me about any Indian law (e.g., "What is IPC Section 302?")</li>
+                        <li>Inquire about legal procedures (e.g., "How to file a consumer complaint?")</li>
+                        <li>Get information about your rights (e.g., "What are my rights as a tenant?")</li>
+                    </ul>
+                    <p>This is a self-contained assistant with no external dependencies. All information is stored locally in this file.</p>
+                </div>
+            </div>
+            <div id="typingIndicator" class="typing-indicator">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><i class="fas fa-gavel"></i> Standalone Legal Research Assistant | &copy; 2025 Indian Law Database</p>
+            <p>Self-contained legal assistant with no external API dependencies</p>
+        </div>
+    </div>
+
+    <script>
+        // Legal knowledge base
+        const legalKnowledgeBase = [
+            {
+                "keywords": ["ipc", "indian penal code", "criminal law", "section 302", "murder"],
+                "title": "Indian Penal Code, 1860 - Murder (Section 302)",
+                "content": "Section 302 of the Indian Penal Code deals with punishment for murder. It states that whoever commits murder shall be punished with death or imprisonment for life and shall also be liable to fine.\n\nEssential elements of murder under IPC:\n1. Death of a human being\n2. Intention to cause death\n3. Knowledge that the act is likely to cause death\n4. Absence of any excuse like private defense\n\nTypes of murder:\n• Intentional murder\n• Murder by causing bodily injury\n• Murder with knowledge of likely death\n\nDifference from culpable homicide:\nCulpable homicide is murder when:\n• It is committed with the intention of causing death\n• It is committed with the intention of causing such bodily injury as is likely to cause death\n• It is committed with the knowledge that it is likely to cause death",
+                "sources": ["Indian Penal Code, 1860 - Section 302"]
+            },
+            {
+                "keywords": ["ipc", "indian penal code", "criminal law", "section 420", "cheating"],
+                "title": "Indian Penal Code, 1860 - Cheating (Section 420)",
+                "content": "Section 420 of the Indian Penal Code deals with cheating and dishonestly inducing delivery of property. It is one of the most commonly used sections in criminal cases.\n\nPunishment:\n• Imprisonment up to 7 years\n• Fine\n• Both imprisonment and fine\n\nEssential elements:\n1. Deception of any person\n2. Fraudulently or dishonestly inducing delivery of property\n3. Damage or harm caused to the person deceived\n\nExamples:\n• Fake job offers\n• Online scams\n• Forgery of documents\n• Ponzi schemes\n• Identity theft\n\nDifference from Section 415 (Cheating):\nSection 415 only covers cheating, while Section 420 covers cheating with inducement of property delivery.",
+                "sources": ["Indian Penal Code, 1860 - Section 420"]
+            },
+            {
+                "keywords": ["ipc", "indian penal code", "criminal law", "section 376", "rape"],
+                "title": "Indian Penal Code, 1860 - Rape (Section 376)",
+                "content": "Section 376 of the Indian Penal Code deals with punishment for rape. The law was significantly amended after the 2012 Delhi gang rape case.\n\nPunishment:\n• Not less than 7 years, which may extend to life imprisonment\n• Fine\n• Death penalty in aggravated circumstances\n\nAggravated circumstances (punishable with death):\n• Gang rape\n• Rape by relatives\n• Rape of pregnant women\n• Rape of women under 12 years\n• Rape causing death or vegetative state\n\nConsent as a defense:\nConsent is not a defense if obtained by:\n• Fear of death or hurt\n• Misrepresentation\n• Unsoundness of mind\n• Intoxication\n• Against order of justice",
+                "sources": ["Indian Penal Code, 1860 - Section 376"]
+            },
+            {
+                "keywords": ["consumer", "consumer protection act", "complaint"],
+                "title": "Consumer Protection Act, 2019 - Filing Complaints",
+                "content": "The Consumer Protection Act, 2019 provides a simplified mechanism for filing consumer complaints.\n\nWhere to file:\n• District Commission: Up to ₹1 crore\n• State Commission: ₹1 crore to ₹10 crore\n• National Commission: Above ₹10 crore\n\nProcess:\n1. Online filing at consumerhelpline.gov.in\n2. Physical filing at respective commission\n3. Required documents:\n   • Copy of complaint\n   • Proof of purchase\n   • Evidence of defect/deficiency\n   • Details of opposite party\n\nTime limit:\n• 2 years from the date cause of action arises\n• Can be extended by 90 days with sufficient cause\n\nReliefs available:\n• Removal of defects\n• Replacement of goods\n• Refund of price\n• Compensation\n• Discontinuation of unfair trade practices",
+                "sources": ["Consumer Protection Act, 2019 - Chapter VI"]
+            },
+            {
+                "keywords": ["consumer", "consumer protection act", "rights"],
+                "title": "Consumer Protection Act, 2019 - Consumer Rights",
+                "content": "The Consumer Protection Act, 2019 recognizes six fundamental rights of consumers:\n\n1. Right to Safety:\n   Protection against goods and services hazardous to life and property\n\n2. Right to Information:\n   Access to information about quality, quantity, potency, purity, standard and price\n\n3. Right to Choice:\n   Access to variety of goods and services at competitive prices\n\n4. Right to be Heard:\n   Consumer interests receive due consideration at appropriate forums\n\n5. Right to Seek Redressal:\n   Right to seek redressal against unfair trade practices or restrictive trade practices\n\n6. Right to Consumer Education:\n   Right to acquire knowledge and skills to make informed choices\n\nAdditional protections:\n• Product liability provisions\n• Mediation mechanisms\n• E-commerce consumer protection\n• Central Consumer Protection Authority (CCPA)",
+                "sources": ["Consumer Protection Act, 2019 - Section 2(9)"]
+            },
+            {
+                "keywords": ["company", "companies act", "registration"],
+                "title": "Companies Act, 2013 - Company Registration Process",
+                "content": "The Companies Act, 2013 provides a streamlined process for company registration in India.\n\nTypes of companies:\n• Private Limited Company\n• Public Limited Company\n• One Person Company (OPC)\n• Limited Liability Partnership (LLP)\n\nRegistration process:\n1. Obtain Digital Signature Certificate (DSC) for directors\n2. Apply for Director Identification Number (DIN)\n3. File RUN (Reserve Unique Name) form for name approval\n4. Prepare incorporation documents (MOA, AOA)\n5. File SPICe+ form with required documents\n6. Pay registration fees\n7. Receive Certificate of Incorporation\n\nDocuments required:\n• Identity and address proof of directors\n• Registered office proof\n• NOC from property owner\n• MOA and AOA\n• Consent of directors\n\nTimeline: 7-14 working days for normal processing",
+                "sources": ["Companies Act, 2013 - Chapter II"]
+            },
+            {
+                "keywords": ["company", "companies act", "director"],
+                "title": "Companies Act, 2013 - Directors and Their Responsibilities",
+                "content": "The Companies Act, 2013 prescribes detailed provisions for directors' appointment, qualifications, and responsibilities.\n\nTypes of directors:\n• Executive Directors\n• Non-Executive Directors\n• Independent Directors\n• Woman Director (mandatory for certain companies)\n• Additional Directors\n• Alternate Directors\n\nQualifications:\n• Must be individual (no corporate directors)\n• Not disqualified under Section 164\n• Obtain DIN before appointment\n• Consent to act as director\n\nResponsibilities:\n• Act in good faith\n• Exercise duties with due diligence\n• Not delegate substantial powers\n• Disclose conflicts of interest\n• Maintain statutory registers\n• Ensure compliance with laws\n\nDisqualifications:\n• Convicted of fraud\n• Failed to file financial statements\n• Failed to repay deposits\n• Insolvent persons",
+                "sources": ["Companies Act, 2013 - Chapter XI"]
+            },
+            {
+                "keywords": ["contract", "indian contract act", "offer", "acceptance"],
+                "title": "Indian Contract Act, 1872 - Offer and Acceptance",
+                "content": "Chapters II and III of the Indian Contract Act, 1872 deal with the concepts of offer and acceptance, which are essential for a valid contract.\n\nOffer (Section 2(a)):\n• Expression of willingness to do or abstain from doing something\n• Made with intention to obtain assent\n• Must be definite and communicated\n• Can be express or implied\n• Types: Specific offer, General offer\n\nAcceptance (Section 2(b)):\n• Signifies assent to the proposal\n• Must be absolute and unqualified\n• Must be communicated to the proposer\n• Must follow the prescribed mode\n• Cannot precede the offer\n\nRules of acceptance:\n• Must be absolute and unconditional\n• Must be communicated\n• Must be according to the prescribed mode\n• Must be within reasonable time\n• Cannot be implied from silence\n\nRevocation:\n• Offer can be revoked before acceptance\n• Acceptance can be revoked before communication",
+                "sources": ["Indian Contract Act, 1872 - Sections 2-9"]
+            },
+            {
+                "keywords": ["rti", "right to information", "application"],
+                "title": "Right to Information Act, 2005 - RTI Application Process",
+                "content": "The Right to Information Act, 2005 empowers citizens to request information from public authorities.\n\nHow to file RTI:\n1. Draft application in English, Hindi, or official language\n2. Specify details of information required\n3. Pay fee of ₹10 (varies by state)\n4. Submit to Public Information Officer (PIO)\n5. Mention contact details\n6. Keep one copy for records\n\nModes of submission:\n• Physical submission at PIO office\n• Online submission (if facility available)\n• Post to PIO office\n• Through Assistant PIO\n\nTime limits:\n• Information provided within 30 days\n• 48 hours for matters concerning life and liberty\n• 5 days extra if applied to Assistant PIO\n\nAppeals:\n• First appeal to First Appellate Authority within 30 days\n• Second appeal to Information Commission within 90 days\n• No fee for appeals",
+                "sources": ["Right to Information Act, 2005 - Sections 6-7"]
+            },
+            {
+                "keywords": ["divorce", "hindu marriage act", "mutual consent"],
+                "title": "Hindu Marriage Act, 1955 - Mutual Consent Divorce",
+                "content": "Section 13B of the Hindu Marriage Act, 1955 provides for divorce by mutual consent.\n\nRequirements:\n• Marriage must have lasted at least one year\n• Both parties must agree to dissolve marriage\n• They must have been living separately for at least one year\n• They must be unable to live together\n• They must agree on alimony and child custody\n\nProcedure:\n1. File joint petition in family court\n2. First motion - 6 months cooling period\n3. Second motion after 6 months but before 18 months\n4. Court hearing and verification\n5. Decree of divorce\n\nGrounds for mutual consent:\n• Irretrievable breakdown of marriage\n• Incompatibility\n• Desertion\n• Mental cruelty\n• Physical cruelty\n\nDocuments required:\n• Marriage certificate\n• Address proof\n• Income proof\n• Separation details\n• Child custody agreement\n• Alimony agreement",
+                "sources": ["Hindu Marriage Act, 1955 - Section 13B"]
+            },
+            {
+                "keywords": ["gst", "goods and services tax", "registration"],
+                "title": "Goods and Services Tax Act, 2017 - GST Registration",
+                "content": "The GST regime requires businesses to register under certain conditions.\n\nMandatory registration:\n• Aggregate turnover exceeds ₹40 lakhs (₹20 lakhs for NE states)\n• Interstate supplies\n• E-commerce operators\n• Casual taxable persons\n• Non-resident taxable persons\n• Input service distributors\n• TDS deductors\n• TCS collectors\n\nDocuments required:\n• PAN card\n• Aadhaar card\n• Business registration proof\n• Bank account details\n• Digital signature\n• Address proof\n• Photographs\n• Constitution documents\n\nProcess:\n1. Visit gst.gov.in\n2. Click on 'Services' > 'User Registration'\n3. Fill Form GST REG-01\n4. Upload documents\n5. ARN generation\n6. Verification by tax authorities\n7. GSTIN and certificate issuance\n\nTimeline: Usually 3-7 working days",
+                "sources": ["Goods and Services Tax Act, 2017 - Section 22"]
+            }
+        ];
+
+        // Global legal systems information
+        const globalLegalSystems = [
+            {
+                "name": "Common Law",
+                "description": "Based on judicial precedent and case law. Used in UK, USA, Canada, Australia, India.",
+                "characteristics": [
+                    "Judge-made law through precedents",
+                    "Adversarial system",
+                    "Binding precedent (stare decisis)",
+                    "Flexible and adaptive"
+                ],
+                "countries": ["United Kingdom", "United States", "Canada", "Australia", "India", "Pakistan", "Malaysia"]
+            },
+            {
+                "name": "Civil Law",
+                "description": "Based on comprehensive legal codes. Used in most of Europe, Latin America.",
+                "characteristics": [
+                    "Codified statutes as primary source",
+                    "Inquisitorial system",
+                    "Judges apply law rather than create it",
+                    "More predictable and systematic"
+                ],
+                "countries": ["France", "Germany", "Italy", "Spain", "Brazil", "Mexico", "Japan"]
+            },
+            {
+                "name": "Religious Law",
+                "description": "Based on religious texts and doctrines.",
+                "characteristics": [
+                    "Derived from religious scriptures",
+                    "Divine authority as source",
+                    "Covers both civil and criminal matters",
+                    "Limited flexibility for change"
+                ],
+                "countries": ["Saudi Arabia", "Iran", "Vatican City", "Israel (partially)"]
+            },
+            {
+                "name": "Customary Law",
+                "description": "Based on customs and traditions of specific communities.",
+                "characteristics": [
+                    "Oral tradition and community practices",
+                    "Passed down through generations",
+                    "Often informal and flexible",
+                    "Integrated with formal legal systems"
+                ],
+                "countries": ["Many African nations", "Indigenous communities worldwide", "Tribal regions"]
+            }
+        ];
+
+        // Funny responses for non-legal queries
+        const funnyResponses = {
+            "hello": "Namaste! 🙏 I'm your legal assistant. Ask me anything about Indian laws!",
+            "hi": "Hello! 🙌 Ready to explore the fascinating world of Indian jurisprudence?",
+            "hey": "Hey there! ⚖️ What legal conundrum can I help you solve today?",
+            "how are you": "I'm just a program, but I'm functioning optimally! 💻 How can I assist you with Indian laws?",
+            "what is your name": "I'm the Legal Eagle! 🦅 Your guide through the complex maze of Indian legal system.",
+            "who are you": "I'm your friendly legal assistant! 🤖 I know a lot about Indian laws and regulations.",
+            "joke": "Why don't lawyers like to go camping? Because they prefer indoor plumbing! 😄",
+            "funny": "I'm all about legal humor! Did you know the Indian Penal Code has over 500 sections? That's a lot of laws to keep us in line! 😅",
+            "love": "I appreciate your enthusiasm, but I'm programmed to talk about laws, not romance! ❤️‍🔥 Let's discuss something legal instead!",
+            "hate": "I understand you might be frustrated, but let's focus on how I can help you with legal matters! ⚖️",
+            "goodbye": "See you later! Don't forget to follow the law! 👋",
+            "bye": "Bye! Remember, ignorance of the law is no excuse! 😉",
+            "thanks": "You're welcome! I'm here to help with all your legal questions. Feel free to ask more!",
+            "thank you": "You're very welcome! Legal knowledge should be accessible to everyone. What else can I help you with?",
+            "ok": "Understood! Let me know if you have any legal questions I can help with.",
+            "yes": "Indeed! Is there a specific legal topic you'd like to explore?",
+            "no": "I understand. Feel free to ask whenever you have a legal question."
+        };
+
+        function getFunnyResponse(query) {
+            const queryLower = query.toLowerCase().trim();
+            
+            // Direct matches
+            if (funnyResponses[queryLower]) {
+                return funnyResponses[queryLower];
+            }
+            
+            // Partial matches
+            for (const key in funnyResponses) {
+                if (queryLower.includes(key)) {
+                    return funnyResponses[key];
+                }
+            }
+            
+            // Default response
+            return "I'm here to help with legal questions, but I appreciate your friendly greeting! 😊 Please ask me something about Indian laws.";
+        }
+
+        function showTypingIndicator() {
+            document.getElementById("typingIndicator").style.display = "block";
+        }
+
+        function hideTypingIndicator() {
+            document.getElementById("typingIndicator").style.display = "none";
+        }
+
+        function addMessage(content, isUser) {
+            const chatHistory = document.getElementById("chatHistory");
+            const messageDiv = document.createElement("div");
+            messageDiv.className = "message " + (isUser ? "user-message" : "bot-message");
+            messageDiv.innerHTML = content;
+            chatHistory.appendChild(messageDiv);
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        }
+
+        function setQuestion(question) {
+            document.getElementById("queryInput").value = question;
+            processQuery();
+        }
+
+        function isLegalQuestion(query) {
+            const legalKeywords = [
+                "act", "law", "legal", "court", "judge", "contract", "rights", "duty", "obligation",
+                "penal", "code", "constitution", "tax", "company", "business", "property", "sale",
+                "consumer", "arbitration", "dispute", "criminal", "civil", "procedure", "evidence",
+                "jurisdiction", "appeal", "witness", "defendant", "plaintiff", "accused", "victim",
+                "offence", "punishment", "fine", "imprisonment", "bail", "investigation", "indian",
+                "constitution", "penal", "contract", "evidence", "transfer", "property", "partnership",
+                "consumer", "protection", "information", "technology", "motor", "vehicle", "income",
+                "tax", "gst", "goods", "services", "insolvency", "bankruptcy", "arbitration",
+                "commercial", "civil", "criminal", "procedure", "minimum", "wages", "factories",
+                "industrial", "disputes", "maternity", "benefit", "right", "information", "copyright",
+                "patent", "trademark", "competition", "environment", "scheduled", "castes", "tribes",
+                "domestic", "violence", "sexual", "harassment", "juvenile", "justice", "money",
+                "laundering", "foreign", "exchange", "prevention", "atrocities", "ipc", "rti", "divorce"
+            ];
+            
+            const queryLower = query.toLowerCase();
+            return legalKeywords.some(keyword => queryLower.includes(keyword));
+        }
+
+        function isWorldLegalQuery(query) {
+            const worldKeywords = [
+                "world", "global", "international", "different countries", "other countries",
+                "legal systems worldwide", "world legal systems", "global law", "international law",
+                "common law", "civil law", "religious law", "customary law", "legal system types",
+                "compare legal systems", "legal systems comparison", "world statistics", "global statistics"
+            ];
+            
+            const queryLower = query.toLowerCase();
+            return worldKeywords.some(keyword => queryLower.includes(keyword));
+        }
+
+        function searchKnowledgeBase(query) {
+            const queryLower = query.toLowerCase();
+            const results = [];
+            
+            for (const doc of legalKnowledgeBase) {
+                // Calculate relevance score
+                let score = 0;
+                
+                // Check exact keyword matches (highest weight)
+                for (const keyword of doc.keywords) {
+                    if (queryLower === keyword || queryLower.includes(" " + keyword + " ") || 
+                        queryLower.startsWith(keyword + " ") || queryLower.endsWith(" " + keyword)) {
+                        score += 5;
+                    } else if (queryLower.includes(keyword)) {
+                        score += 3;
+                    }
+                }
+                
+                // Check title match (medium weight)
+                if (doc.title.toLowerCase().includes(queryLower)) {
+                    score += 2;
+                }
+                
+                // Check content match (lowest weight)
+                if (doc.content.toLowerCase().includes(queryLower)) {
+                    score += 1;
+                }
+                
+                // Special handling for section queries
+                const sectionMatch = queryLower.match(/section\s+(\d+)/i);
+                if (sectionMatch && doc.title.toLowerCase().includes("section " + sectionMatch[1])) {
+                    score += 10; // High priority for section-specific queries
+                }
+                
+                // Add to results if relevant
+                if (score > 0) {
+                    results.push({
+                        ...doc,
+                        score: score
+                    });
+                }
+            }
+            
+            // Sort by relevance score (highest first)
+            results.sort((a, b) => {
+                // First sort by score
+                if (b.score !== a.score) {
+                    return b.score - a.score;
+                }
+                // Then by keyword match count
+                return b.keywords.length - a.keywords.length;
+            });
+            
+            return results;
+        }
+
+        function generateWorldLegalResponse(query) {
+            const queryLower = query.toLowerCase();
+            
+            if (queryLower.includes("common law")) {
+                const system = globalLegalSystems[0];
+                return "**" + system.name + " System**\n\n" + system.description + "\n\nKey Characteristics:\n" + 
+                    system.characteristics.map(char => "• " + char).join('\n') + 
+                    "\n\nUsed in countries like: " + system.countries.slice(0, 5).join(', ') + " and others.";
+            } else if (queryLower.includes("civil law")) {
+                const system = globalLegalSystems[1];
+                return "**" + system.name + " System**\n\n" + system.description + "\n\nKey Characteristics:\n" + 
+                    system.characteristics.map(char => "• " + char).join('\n') + 
+                    "\n\nUsed in countries like: " + system.countries.slice(0, 5).join(', ') + " and others.";
+            } else if (queryLower.includes("religious law")) {
+                const system = globalLegalSystems[2];
+                return "**" + system.name + " System**\n\n" + system.description + "\n\nKey Characteristics:\n" + 
+                    system.characteristics.map(char => "• " + char).join('\n') + 
+                    "\n\nExamples include: " + system.countries.slice(0, 3).join(', ') + " and others.";
+            } else if (queryLower.includes("customary law")) {
+                const system = globalLegalSystems[3];
+                return "**" + system.name + " System**\n\n" + system.description + "\n\nKey Characteristics:\n" + 
+                    system.characteristics.map(char => "• " + char).join('\n') + 
+                    "\n\nFound in: " + system.countries.slice(0, 3).join(', ') + " and indigenous communities worldwide.";
+            } else if (queryLower.includes("compare") || queryLower.includes("difference")) {
+                let response = "**Comparison of Global Legal Systems**\n\n";
+                for (const system of globalLegalSystems) {
+                    response += "**" + system.name + "**\n" + system.description + "\n\n";
+                }
+                return response;
+            } else {
+                let response = "**Global Legal Systems Overview**\n\n";
+                for (const system of globalLegalSystems) {
+                    response += "**" + system.name + "**: " + system.description + "\n\n";
+                }
+                return response + "For detailed information about any specific legal system, please ask about Common Law, Civil Law, Religious Law, or Customary Law.";
+            }
+        }
+
+        function generateResponse(query, contextDocs) {
+            if (isWorldLegalQuery(query)) {
+                return generateWorldLegalResponse(query);
+            }
+            
+            if (!isLegalQuestion(query)) {
+                return getFunnyResponse(query);
+            }
+            
+            if (contextDocs.length > 0) {
+                // Use the highest scoring document
+                const doc = contextDocs[0];
+                
+                // For section-specific queries, provide more focused response
+                const sectionMatch = query.toLowerCase().match(/section\s+(\d+)/i);
+                if (sectionMatch) {
+                    // Extract section-specific information
+                    const sectionNumber = sectionMatch[1];
+                    const lines = doc.content.split('\n');
+                    let sectionContent = "";
+                    let foundSection = false;
+                    
+                    for (let i = 0; i < lines.length; i++) {
+                        if (lines[i].includes("Section " + sectionNumber) || 
+                            lines[i].includes("section " + sectionNumber)) {
+                            foundSection = true;
+                            sectionContent += lines[i] + "\n";
+                            // Include next few lines for context
+                            for (let j = i + 1; j < Math.min(i + 6, lines.length); j++) {
+                                if (lines[j].trim().startsWith("Section ") || 
+                                    lines[j].trim().startsWith("• ") || 
+                                    lines[j].trim().length === 0) {
+                                    break;
+                                }
+                                sectionContent += lines[j] + "\n";
+                            }
+                            break;
+                        }
+                    }
+                    
+                    if (foundSection) {
+                        let response = "**" + doc.title + "**\n\n" + sectionContent.trim();
+                        if (doc.sources && doc.sources.length > 0) {
+                            response += "\n\n**Sources:**\n" + doc.sources.map(source => "• " + source).join('\n');
+                        }
+                        return response;
+                    }
+                }
+                
+                // For general queries, provide a well-structured response
+                let response = "**" + doc.title + "**\n\n" + doc.content;
+                
+                // Add sources if available
+                if (doc.sources && doc.sources.length > 0) {
+                    response += "\n\n**Sources:**\n" + doc.sources.map(source => "• " + source).join('\n');
+                }
+                
+                return response;
+            } else {
+                // Fallback response for unmatched queries
+                return "I couldn't find specific information about '" + query + "' in my knowledge base. Please try rephrasing your question or ask about a different aspect of Indian law.";
+            }
+        }
+
+        async function processQuery() {
+            const queryInput = document.getElementById("queryInput");
+            const query = queryInput.value.trim();
+            
+            if (!query) return;
+            
+            // Add user message
+            addMessage("<strong>You:</strong> " + query, true);
+            queryInput.value = "";
+            
+            // Show typing indicator
+            showTypingIndicator();
+            
+            // Simulate processing delay
+            await new Promise(resolve => setTimeout(resolve, 800 + Math.random() * 700));
+            
+            try {
+                // Process the query
+                const contextDocs = searchKnowledgeBase(query);
+                const response = generateResponse(query, contextDocs);
+                
+                // Hide typing indicator
+                hideTypingIndicator();
+                
+                // Add bot response with formatted content
+                const formattedResponse = response.replace(/\n/g, '<br>');
+                addMessage("<strong>Legal Assistant:</strong> <p>" + formattedResponse + "</p>", false);
+                
+                // Add sources if available and relevant
+                if (contextDocs.length > 0 && contextDocs[0].sources && contextDocs[0].score > 2) {
+                    const sourcesDiv = document.createElement("div");
+                    sourcesDiv.className = "message bot-message";
+                    sourcesDiv.innerHTML = '<div class="source-info"><strong>Sources:</strong><br>' + contextDocs[0].sources.join("<br>") + '</div>';
+                    document.getElementById("chatHistory").appendChild(sourcesDiv);
+                    document.getElementById("chatHistory").scrollTop = document.getElementById("chatHistory").scrollHeight;
+                }
+            } catch (error) {
+                hideTypingIndicator();
+                addMessage("<strong>Legal Assistant:</strong> Sorry, I encountered an error processing your request. Please try again.", false);
+                console.error("Error processing query:", error);
+            }
+        }
+
+        // Allow Enter key to send message
+        document.getElementById("queryInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                processQuery();
+            }
+        });
+
+        // Initialize with a welcome message
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log("Standalone Legal Research Assistant loaded successfully");
+        });
+    </script>
+</body>
+</html>
